@@ -1,0 +1,513 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #04070a;
+  color: #e2f1f8;
+  font-family: 'Inter', sans-serif;
+  user-select: none;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* BOOT SCREEN */
+.boot {
+  position: fixed;
+  inset: 0;
+  background: #04070a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.boot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bootbox {
+  position: relative;
+  width: 520px;
+  background: #090e14;
+  border: 1px solid #00f0ff55;
+  padding: 40px;
+  box-shadow: 0 0 50px rgba(0, 240, 255, 0.15);
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #00f0ff;
+  margin-bottom: 8px;
+}
+
+.bootbox h1 {
+  font-size: 32px;
+  color: #ffffff;
+  margin-bottom: 24px;
+}
+
+.bootbox h1 span {
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0,240,255,0.6);
+}
+
+.boot-lines {
+  font-size: 13px;
+  color: #9cbccb;
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+
+.boot-lines b {
+  color: #00ff66;
+  float: right;
+}
+
+.progress {
+  width: 100%;
+  height: 6px;
+  background: #0f1820;
+  border: 1px solid #00f0ff33;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.progress i {
+  display: block;
+  height: 100%;
+  background: #00f0ff;
+  box-shadow: 0 0 10px #00f0ff;
+  transition: width 0.1s linear;
+}
+
+.boot-role {
+  font-size: 11px;
+  color: #00f0ff;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.bootbox button {
+  width: 100%;
+  padding: 14px;
+  background: #00f0ff;
+  border: none;
+  color: #04070a;
+  font-weight: bold;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  box-shadow: 0 0 15px rgba(0,240,255,0.4);
+}
+
+.bootbox button:hover:not(:disabled) {
+  background: #ffffff;
+  box-shadow: 0 0 25px rgba(255,255,255,0.8);
+}
+
+.bootbox button:disabled {
+  background: #0f1820;
+  color: #435661;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* HUD */
+.hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  font-family: 'Share Tech Mono', monospace;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.hud > * {
+  pointer-events: auto;
+}
+
+.hud-tl {
+  background: rgba(9, 14, 20, 0.9);
+  border: 1px solid #00f0ff44;
+  padding: 12px 18px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 15px rgba(0,240,255,0.1);
+}
+
+.hud-tl b { display: block; font-size: 14px; color: #fff; }
+.hud-tl span { font-size: 10px; color: #00f0ff; letter-spacing: 1px; }
+
+.hud-tr {
+  background: rgba(9, 14, 20, 0.9);
+  border: 1px solid #00f0ff44;
+  padding: 12px 18px;
+  backdrop-filter: blur(8px);
+  text-align: right;
+  font-size: 11px;
+}
+
+.hud-tr span { color: #9cbccb; margin-right: 8px; }
+.hud-tr .online { color: #00ff66; text-shadow: 0 0 8px rgba(0,255,102,0.6); }
+
+.hud-bl {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  background: rgba(9, 14, 20, 0.9);
+  border: 1px solid #00f0ff44;
+  padding: 10px 16px;
+  font-size: 11px;
+  backdrop-filter: blur(8px);
+}
+
+.hud-br {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(9, 14, 20, 0.9);
+  border: 1px solid #00f0ff44;
+  padding: 10px 16px;
+  font-size: 11px;
+  backdrop-filter: blur(8px);
+}
+
+.reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(0, 240, 255, 0.7);
+  font-size: 22px;
+  pointer-events: none;
+  text-shadow: 0 0 10px #00f0ff;
+}
+
+.toolbar {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  background: rgba(9, 14, 20, 0.95);
+  border: 1px solid #00f0ff55;
+  padding: 8px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(0,240,255,0.15);
+}
+
+.toolbar button, .toolbar select {
+  background: #0f1820;
+  border: 1px solid #00f0ff44;
+  color: #e2f1f8;
+  padding: 8px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toolbar button:hover, .toolbar select:hover {
+  background: #00f0ff;
+  color: #04070a;
+  border-color: #00f0ff;
+  box-shadow: 0 0 12px #00f0ff;
+}
+
+.toolbar small {
+  display: block;
+  font-size: 9px;
+  opacity: 0.8;
+}
+
+/* DRAWER PANELS */
+.drawer {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  bottom: 24px;
+  width: 500px;
+  background: rgba(9, 14, 20, 0.96);
+  border: 1px solid #00f0ff66;
+  backdrop-filter: blur(16px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -15px 0 50px rgba(0, 240, 255, 0.2);
+  font-family: 'Share Tech Mono', monospace;
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideIn {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.drawer-head {
+  padding: 24px;
+  border-bottom: 1px solid #00f0ff33;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.drawer-head h1 {
+  font-size: 22px;
+  color: #fff;
+  margin: 4px 0;
+  text-shadow: 0 0 8px rgba(0,240,255,0.4);
+}
+
+.drawer-head p {
+  font-size: 12px;
+  color: #00f0ff;
+}
+
+.drawer-head button {
+  background: #0f1820;
+  border: 1px solid #00f0ff44;
+  color: #e2f1f8;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.drawer-head button:hover {
+  background: #00f0ff;
+  color: #04070a;
+}
+
+.drawer-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+  font-size: 13px;
+  color: #b3cdd7;
+  line-height: 1.6;
+}
+
+.drawer-body h2 { color: #fff; font-size: 18px; margin-bottom: 12px; }
+.drawer-body .lead { margin-bottom: 20px; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.chips span {
+  background: #0f1820;
+  border: 1px solid #00f0ff44;
+  padding: 6px 12px;
+  font-size: 11px;
+  color: #00f0ff;
+  box-shadow: inset 0 0 8px rgba(0,240,255,0.1);
+}
+
+.section-title {
+  font-size: 11px;
+  color: #00f0ff;
+  letter-spacing: 1px;
+  margin: 20px 0 8px 0;
+  border-bottom: 1px solid #00f0ff33;
+  padding-bottom: 4px;
+}
+
+.primary {
+  width: 100%;
+  padding: 12px;
+  background: #00f0ff;
+  border: none;
+  color: #04070a;
+  font-weight: bold;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: pointer;
+  margin-top: 20px;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+  box-shadow: 0 0 15px rgba(0,240,255,0.4);
+  transition: all 0.2s;
+}
+
+.primary:hover {
+  background: #fff;
+  box-shadow: 0 0 25px rgba(255,255,255,0.8);
+}
+
+/* TERMINAL OVERLAY */
+.terminal {
+  position: fixed;
+  bottom: 80px;
+  left: 24px;
+  width: 460px;
+  height: 340px;
+  background: rgba(9, 14, 20, 0.96);
+  border: 1px solid #00f0ff66;
+  backdrop-filter: blur(10px);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Share Tech Mono', monospace;
+  box-shadow: 0 10px 40px rgba(0, 240, 255, 0.2);
+}
+
+.terminal-head {
+  background: #0f1820;
+  padding: 8px 14px;
+  font-size: 11px;
+  color: #00f0ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #00f0ff44;
+}
+
+.terminal-head button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.terminal-body {
+  padding: 12px;
+  flex: 1;
+  overflow-y: auto;
+  font-size: 12px;
+  color: #b3cdd7;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00f0ff;
+  margin-top: 4px;
+}
+
+.prompt input {
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  outline: none;
+  flex: 1;
+}
+
+/* MAP OVERLAY */
+.map {
+  position: fixed;
+  inset: 60px;
+  background: rgba(4, 7, 10, 0.95);
+  border: 1px solid #00f0ff66;
+  backdrop-filter: blur(16px);
+  z-index: 40;
+  font-family: 'Share Tech Mono', monospace;
+  padding: 30px;
+  box-shadow: 0 0 50px rgba(0,240,255,0.2);
+}
+
+.map-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #00f0ff;
+  border-bottom: 1px solid #00f0ff33;
+  padding-bottom: 12px;
+}
+
+.map-head button {
+  background: #0f1820;
+  border: 1px solid #00f0ff44;
+  color: #fff;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.map-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #0f1820;
+  border: 1px solid #00f0ff;
+  padding: 15px 25px;
+  color: #fff;
+  font-size: 12px;
+  box-shadow: 0 0 20px rgba(0,240,255,0.3);
+}
+
+.map button {
+  position: absolute;
+  background: #090e14;
+  border: 1px solid #00f0ff44;
+  color: #e2f1f8;
+  padding: 10px 18px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.map button:hover {
+  background: #00f0ff;
+  color: #04070a;
+  border-color: #00f0ff;
+  box-shadow: 0 0 15px #00f0ff;
+}
+
+/* ACCESS CHECKBOX */
+.access {
+  position: fixed;
+  bottom: 24px;
+  right: 220px;
+  background: rgba(9, 14, 20, 0.9);
+  border: 1px solid #00f0ff44;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-family: 'Share Tech Mono', monospace;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+}
+
+.access label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #9cbccb;
+}
+
+.access input {
+  cursor: pointer;
+}
