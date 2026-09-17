@@ -9,11 +9,7 @@ import {
 } from "react";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import {
-  Float,
-  MeshTransmissionMaterial,
-  Text,
-} from "@react-three/drei";
+import { Float, MeshTransmissionMaterial, Text } from "@react-three/drei";
 
 import * as THREE from "three";
 
@@ -136,7 +132,7 @@ function Interactive({
 
     group.current.scale.lerp(
       new THREE.Vector3(targetScale, targetScale, targetScale),
-      0.12
+      0.12,
     );
   });
 
@@ -243,25 +239,17 @@ function DeveloperCharacter() {
 
     const dt = Math.min(delta, 0.05);
 
-    const forward =
-      keys.current["KeyW"] || keys.current["ArrowUp"];
+    const forward = keys.current["KeyW"] || keys.current["ArrowUp"];
 
-    const backward =
-      keys.current["KeyS"] || keys.current["ArrowDown"];
+    const backward = keys.current["KeyS"] || keys.current["ArrowDown"];
 
-    const left =
-      keys.current["KeyA"] || keys.current["ArrowLeft"];
+    const left = keys.current["KeyA"] || keys.current["ArrowLeft"];
 
-    const right =
-      keys.current["KeyD"] || keys.current["ArrowRight"];
+    const right = keys.current["KeyD"] || keys.current["ArrowRight"];
 
     const sprint = keys.current["ShiftLeft"] || keys.current["ShiftRight"];
 
-    const moving =
-      forward ||
-      backward ||
-      left ||
-      right;
+    const moving = forward || backward || left || right;
 
     /* -----------------------------------------------------
        CAMERA DIRECTION
@@ -280,7 +268,7 @@ function DeveloperCharacter() {
     const cameraRight = new THREE.Vector3(
       cameraDirection.z,
       0,
-      -cameraDirection.x
+      -cameraDirection.x,
     );
 
     /* -----------------------------------------------------
@@ -313,24 +301,20 @@ function DeveloperCharacter() {
       player.current.speed = THREE.MathUtils.lerp(
         player.current.speed,
         targetSpeed,
-        1 - Math.pow(0.001, dt)
+        1 - Math.pow(0.001, dt),
       );
 
       player.current.position.addScaledVector(
         movement,
-        player.current.speed * dt
+        player.current.speed * dt,
       );
 
       /*
         Rotate character toward movement.
       */
-      const targetRotation = Math.atan2(
-        movement.x,
-        movement.z
-      );
+      const targetRotation = Math.atan2(movement.x, movement.z);
 
-      let rotationDifference =
-        targetRotation - player.current.rotation;
+      let rotationDifference = targetRotation - player.current.rotation;
 
       while (rotationDifference > Math.PI) {
         rotationDifference -= Math.PI * 2;
@@ -340,14 +324,12 @@ function DeveloperCharacter() {
         rotationDifference += Math.PI * 2;
       }
 
-      player.current.rotation +=
-        rotationDifference *
-        Math.min(1, dt * 10);
+      player.current.rotation += rotationDifference * Math.min(1, dt * 10);
     } else {
       player.current.speed = THREE.MathUtils.lerp(
         player.current.speed,
         0,
-        1 - Math.pow(0.001, dt)
+        1 - Math.pow(0.001, dt),
       );
     }
 
@@ -357,11 +339,7 @@ function DeveloperCharacter() {
 
     const jump = keys.current["Space"];
 
-    if (
-      jump &&
-      !jumpPressed.current &&
-      player.current.grounded
-    ) {
+    if (jump && !jumpPressed.current && player.current.grounded) {
       player.current.velocityY = 7.5;
       player.current.grounded = false;
     }
@@ -374,8 +352,7 @@ function DeveloperCharacter() {
 
     player.current.velocityY -= 18 * dt;
 
-    player.current.position.y +=
-      player.current.velocityY * dt;
+    player.current.position.y += player.current.velocityY * dt;
 
     if (player.current.position.y <= 0) {
       player.current.position.y = 0;
@@ -387,12 +364,9 @@ function DeveloperCharacter() {
        APPLY PLAYER TRANSFORM
     ----------------------------------------------------- */
 
-    root.current.position.copy(
-      player.current.position
-    );
+    root.current.position.copy(player.current.position);
 
-    root.current.rotation.y =
-      player.current.rotation;
+    root.current.rotation.y = player.current.rotation;
 
     /* -----------------------------------------------------
        ANIMATION
@@ -430,12 +404,10 @@ function DeveloperCharacter() {
        IDLE BREATHING
     ----------------------------------------------------- */
 
-    const breathing =
-      Math.sin(time * 2.0) * 0.025;
+    const breathing = Math.sin(time * 2.0) * 0.025;
 
     if (torso.current) {
-      torso.current.position.y =
-        1.55 + breathing;
+      torso.current.position.y = 1.55 + breathing;
     }
 
     /* -----------------------------------------------------
@@ -443,87 +415,70 @@ function DeveloperCharacter() {
     ----------------------------------------------------- */
 
     if (isWalking) {
-      const animationSpeed =
-        isRunning ? 10 : 7;
+      const animationSpeed = isRunning ? 10 : 7;
 
-      const walkTime =
-        time * animationSpeed;
+      const walkTime = time * animationSpeed;
 
-      const legSwing =
-        Math.sin(walkTime) *
-        (isRunning ? 0.75 : 0.5);
+      const legSwing = Math.sin(walkTime) * (isRunning ? 0.75 : 0.5);
 
-      const armSwing =
-        Math.sin(walkTime) *
-        (isRunning ? 0.5 : 0.35);
+      const armSwing = Math.sin(walkTime) * (isRunning ? 0.5 : 0.35);
 
       if (leftLeg.current) {
-        leftLeg.current.rotation.x =
-          legSwing;
+        leftLeg.current.rotation.x = legSwing;
       }
 
       if (rightLeg.current) {
-        rightLeg.current.rotation.x =
-          -legSwing;
+        rightLeg.current.rotation.x = -legSwing;
       }
 
       if (leftArm.current) {
-        leftArm.current.rotation.x =
-          -armSwing;
+        leftArm.current.rotation.x = -armSwing;
       }
 
       if (rightArm.current) {
-        rightArm.current.rotation.x =
-          armSwing;
+        rightArm.current.rotation.x = armSwing;
       }
 
       if (head.current) {
-        head.current.rotation.y =
-          Math.sin(time * 3) * 0.025;
+        head.current.rotation.y = Math.sin(time * 3) * 0.025;
       }
     } else {
       if (leftLeg.current) {
-        leftLeg.current.rotation.x =
-          THREE.MathUtils.lerp(
-            leftLeg.current.rotation.x,
-            0,
-            0.15
-          );
+        leftLeg.current.rotation.x = THREE.MathUtils.lerp(
+          leftLeg.current.rotation.x,
+          0,
+          0.15,
+        );
       }
 
       if (rightLeg.current) {
-        rightLeg.current.rotation.x =
-          THREE.MathUtils.lerp(
-            rightLeg.current.rotation.x,
-            0,
-            0.15
-          );
+        rightLeg.current.rotation.x = THREE.MathUtils.lerp(
+          rightLeg.current.rotation.x,
+          0,
+          0.15,
+        );
       }
 
       if (leftArm.current) {
-        leftArm.current.rotation.x =
-          THREE.MathUtils.lerp(
-            leftArm.current.rotation.x,
-            0,
-            0.15
-          );
+        leftArm.current.rotation.x = THREE.MathUtils.lerp(
+          leftArm.current.rotation.x,
+          0,
+          0.15,
+        );
       }
 
       if (rightArm.current) {
-        rightArm.current.rotation.x =
-          THREE.MathUtils.lerp(
-            rightArm.current.rotation.x,
-            0,
-            0.15
-          );
+        rightArm.current.rotation.x = THREE.MathUtils.lerp(
+          rightArm.current.rotation.x,
+          0,
+          0.15,
+        );
       }
 
       if (head.current) {
-        head.current.rotation.y =
-          Math.sin(time * 0.7) * 0.08;
+        head.current.rotation.y = Math.sin(time * 0.7) * 0.08;
 
-        head.current.rotation.x =
-          Math.sin(time * 0.45) * 0.025;
+        head.current.rotation.x = Math.sin(time * 0.45) * 0.025;
       }
     }
 
@@ -532,40 +487,32 @@ function DeveloperCharacter() {
     ----------------------------------------------------- */
 
     if (!player.current.grounded) {
-      const jumpPose =
-        THREE.MathUtils.clamp(
-          player.current.velocityY / 7.5,
-          -1,
-          1
-        );
+      const jumpPose = THREE.MathUtils.clamp(
+        player.current.velocityY / 7.5,
+        -1,
+        1,
+      );
 
       if (leftArm.current) {
-        leftArm.current.rotation.x =
-          -0.9 * jumpPose;
+        leftArm.current.rotation.x = -0.9 * jumpPose;
       }
 
       if (rightArm.current) {
-        rightArm.current.rotation.x =
-          -0.9 * jumpPose;
+        rightArm.current.rotation.x = -0.9 * jumpPose;
       }
 
       if (leftLeg.current) {
-        leftLeg.current.rotation.x =
-          0.35;
+        leftLeg.current.rotation.x = 0.35;
       }
 
       if (rightLeg.current) {
-        rightLeg.current.rotation.x =
-          -0.35;
+        rightLeg.current.rotation.x = -0.35;
       }
     }
   });
 
   return (
-    <group
-      ref={root}
-      position={[0, 0, 0]}
-    >
+    <group ref={root} position={[0, 0, 0]}>
       {/* ================================================
           SHADOW / CHARACTER BASE
       ================================================= */}
@@ -596,10 +543,7 @@ function DeveloperCharacter() {
           LEGS
       ================================================= */}
 
-      <group
-        ref={leftLeg}
-        position={[-0.22, 0.78, 0]}
-      >
+      <group ref={leftLeg} position={[-0.22, 0.78, 0]}>
         <mesh position={[0, -0.38, 0]}>
           <boxGeometry args={[0.22, 0.72, 0.28]} />
 
@@ -621,10 +565,7 @@ function DeveloperCharacter() {
         </mesh>
       </group>
 
-      <group
-        ref={rightLeg}
-        position={[0.22, 0.78, 0]}
-      >
+      <group ref={rightLeg} position={[0.22, 0.78, 0]}>
         <mesh position={[0, -0.38, 0]}>
           <boxGeometry args={[0.22, 0.72, 0.28]} />
 
@@ -650,14 +591,9 @@ function DeveloperCharacter() {
           TORSO
       ================================================= */}
 
-      <group
-        ref={torso}
-        position={[0, 1.55, 0]}
-      >
+      <group ref={torso} position={[0, 1.55, 0]}>
         <mesh>
-          <boxGeometry
-            args={[0.72, 1.05, 0.42]}
-          />
+          <boxGeometry args={[0.72, 1.05, 0.42]} />
 
           <meshStandardMaterial
             color="#202733"
@@ -669,9 +605,7 @@ function DeveloperCharacter() {
         {/* chest plate */}
 
         <mesh position={[0, 0.08, 0.23]}>
-          <boxGeometry
-            args={[0.48, 0.58, 0.08]}
-          />
+          <boxGeometry args={[0.48, 0.58, 0.08]} />
 
           <meshStandardMaterial
             color="#303b4d"
@@ -683,9 +617,7 @@ function DeveloperCharacter() {
         {/* center light */}
 
         <mesh position={[0, 0.05, 0.29]}>
-          <sphereGeometry
-            args={[0.095, 20, 20]}
-          />
+          <sphereGeometry args={[0.095, 20, 20]} />
 
           <meshStandardMaterial
             color="#e9edf3"
@@ -699,9 +631,7 @@ function DeveloperCharacter() {
         {/* belt */}
 
         <mesh position={[0, -0.42, 0]}>
-          <boxGeometry
-            args={[0.78, 0.12, 0.46]}
-          />
+          <boxGeometry args={[0.78, 0.12, 0.46]} />
 
           <meshStandardMaterial
             color="#0a0d12"
@@ -715,14 +645,9 @@ function DeveloperCharacter() {
           LEFT ARM
       ================================================= */}
 
-      <group
-        ref={leftArm}
-        position={[-0.52, 1.65, 0]}
-      >
+      <group ref={leftArm} position={[-0.52, 1.65, 0]}>
         <mesh position={[0, -0.3, 0]}>
-          <boxGeometry
-            args={[0.2, 0.62, 0.2]}
-          />
+          <boxGeometry args={[0.2, 0.62, 0.2]} />
 
           <meshStandardMaterial
             color="#161c26"
@@ -732,9 +657,7 @@ function DeveloperCharacter() {
         </mesh>
 
         <mesh position={[0, -0.68, 0]}>
-          <sphereGeometry
-            args={[0.14, 16, 16]}
-          />
+          <sphereGeometry args={[0.14, 16, 16]} />
 
           <meshStandardMaterial
             color="#10151c"
@@ -748,14 +671,9 @@ function DeveloperCharacter() {
           RIGHT ARM
       ================================================= */}
 
-      <group
-        ref={rightArm}
-        position={[0.52, 1.65, 0]}
-      >
+      <group ref={rightArm} position={[0.52, 1.65, 0]}>
         <mesh position={[0, -0.3, 0]}>
-          <boxGeometry
-            args={[0.2, 0.62, 0.2]}
-          />
+          <boxGeometry args={[0.2, 0.62, 0.2]} />
 
           <meshStandardMaterial
             color="#161c26"
@@ -765,9 +683,7 @@ function DeveloperCharacter() {
         </mesh>
 
         <mesh position={[0, -0.68, 0]}>
-          <sphereGeometry
-            args={[0.14, 16, 16]}
-          />
+          <sphereGeometry args={[0.14, 16, 16]} />
 
           <meshStandardMaterial
             color="#10151c"
@@ -781,20 +697,11 @@ function DeveloperCharacter() {
           HEAD
       ================================================= */}
 
-      <group
-        ref={head}
-        position={[0, 2.35, 0]}
-      >
+      <group ref={head} position={[0, 2.35, 0]}>
         <mesh>
-          <sphereGeometry
-            args={[0.34, 32, 24]}
-          />
+          <sphereGeometry args={[0.34, 32, 24]} />
 
-          <meshStandardMaterial
-            color="#c88d70"
-            roughness={0.8}
-            metalness={0}
-          />
+          <meshStandardMaterial color="#c88d70" roughness={0.8} metalness={0} />
         </mesh>
 
         {/* hair */}
@@ -804,18 +711,13 @@ function DeveloperCharacter() {
             args={[0.35, 32, 20, 0, Math.PI * 2, 0, Math.PI * 0.55]}
           />
 
-          <meshStandardMaterial
-            color="#101318"
-            roughness={0.55}
-          />
+          <meshStandardMaterial color="#101318" roughness={0.55} />
         </mesh>
 
         {/* visor */}
 
         <mesh position={[0, 0, 0.31]}>
-          <boxGeometry
-            args={[0.42, 0.08, 0.025]}
-          />
+          <boxGeometry args={[0.42, 0.08, 0.025]} />
 
           <meshStandardMaterial
             color="#0b1017"
@@ -827,14 +729,9 @@ function DeveloperCharacter() {
         {/* neck */}
 
         <mesh position={[0, -0.4, 0]}>
-          <cylinderGeometry
-            args={[0.14, 0.14, 0.22, 16]}
-          />
+          <cylinderGeometry args={[0.14, 0.14, 0.22, 16]} />
 
-          <meshStandardMaterial
-            color="#b97861"
-            roughness={0.8}
-          />
+          <meshStandardMaterial color="#b97861" roughness={0.8} />
         </mesh>
       </group>
 
@@ -843,9 +740,7 @@ function DeveloperCharacter() {
       ================================================= */}
 
       <mesh position={[0, 1.55, -0.28]}>
-        <boxGeometry
-          args={[0.55, 0.75, 0.18]}
-        />
+        <boxGeometry args={[0.55, 0.75, 0.18]} />
 
         <meshStandardMaterial
           color="#10151d"
@@ -914,10 +809,7 @@ function ThirdPersonCamera() {
         Only start camera orbit with middle mouse
         or right mouse.
       */
-      if (
-        event.button === 2 ||
-        event.button === 1
-      ) {
+      if (event.button === 2 || event.button === 1) {
         dragging.current = true;
 
         lastMouse.current.x = event.clientX;
@@ -928,29 +820,19 @@ function ThirdPersonCamera() {
     const pointerMove = (event: PointerEvent) => {
       if (!dragging.current) return;
 
-      const dx =
-        event.clientX -
-        lastMouse.current.x;
+      const dx = event.clientX - lastMouse.current.x;
 
-      const dy =
-        event.clientY -
-        lastMouse.current.y;
+      const dy = event.clientY - lastMouse.current.y;
 
-      lastMouse.current.x =
-        event.clientX;
+      lastMouse.current.x = event.clientX;
 
-      lastMouse.current.y =
-        event.clientY;
+      lastMouse.current.y = event.clientY;
 
       yaw.current -= dx * 0.006;
 
       pitch.current -= dy * 0.004;
 
-      pitch.current = THREE.MathUtils.clamp(
-        pitch.current,
-        -0.15,
-        1.1
-      );
+      pitch.current = THREE.MathUtils.clamp(pitch.current, -0.15, 1.1);
     };
 
     const pointerUp = () => {
@@ -958,72 +840,35 @@ function ThirdPersonCamera() {
     };
 
     const wheel = (event: WheelEvent) => {
-      distance.current +=
-        event.deltaY * 0.005;
+      distance.current += event.deltaY * 0.005;
 
-      distance.current =
-        THREE.MathUtils.clamp(
-          distance.current,
-          4.5,
-          11
-        );
+      distance.current = THREE.MathUtils.clamp(distance.current, 4.5, 11);
     };
 
     const contextMenu = (event: MouseEvent) => {
       event.preventDefault();
     };
 
-    canvas.addEventListener(
-      "pointerdown",
-      pointerDown
-    );
+    canvas.addEventListener("pointerdown", pointerDown);
 
-    window.addEventListener(
-      "pointermove",
-      pointerMove
-    );
+    window.addEventListener("pointermove", pointerMove);
 
-    window.addEventListener(
-      "pointerup",
-      pointerUp
-    );
+    window.addEventListener("pointerup", pointerUp);
 
-    canvas.addEventListener(
-      "wheel",
-      wheel,
-      { passive: true }
-    );
+    canvas.addEventListener("wheel", wheel, { passive: true });
 
-    canvas.addEventListener(
-      "contextmenu",
-      contextMenu
-    );
+    canvas.addEventListener("contextmenu", contextMenu);
 
     return () => {
-      canvas.removeEventListener(
-        "pointerdown",
-        pointerDown
-      );
+      canvas.removeEventListener("pointerdown", pointerDown);
 
-      window.removeEventListener(
-        "pointermove",
-        pointerMove
-      );
+      window.removeEventListener("pointermove", pointerMove);
 
-      window.removeEventListener(
-        "pointerup",
-        pointerUp
-      );
+      window.removeEventListener("pointerup", pointerUp);
 
-      canvas.removeEventListener(
-        "wheel",
-        wheel
-      );
+      canvas.removeEventListener("wheel", wheel);
 
-      canvas.removeEventListener(
-        "contextmenu",
-        contextMenu
-      );
+      canvas.removeEventListener("contextmenu", contextMenu);
     };
   }, [gl]);
 
@@ -1034,40 +879,23 @@ function ThirdPersonCamera() {
       Camera orbit position.
     */
 
-    const horizontalDistance =
-      Math.cos(pitch.current) *
-      distance.current;
+    const horizontalDistance = Math.cos(pitch.current) * distance.current;
 
-    const verticalDistance =
-      Math.sin(pitch.current) *
-      distance.current;
+    const verticalDistance = Math.sin(pitch.current) * distance.current;
 
-    const offsetX =
-      Math.sin(yaw.current) *
-      horizontalDistance;
+    const offsetX = Math.sin(yaw.current) * horizontalDistance;
 
-    const offsetZ =
-      Math.cos(yaw.current) *
-      horizontalDistance;
+    const offsetZ = Math.cos(yaw.current) * horizontalDistance;
 
-    const desiredPosition =
-      new THREE.Vector3(
-        target.x + offsetX,
-        target.y + 2.5 + verticalDistance,
-        target.z + offsetZ
-      );
-
-    camera.position.lerp(
-      desiredPosition,
-      1 - Math.pow(0.001, delta)
+    const desiredPosition = new THREE.Vector3(
+      target.x + offsetX,
+      target.y + 2.5 + verticalDistance,
+      target.z + offsetZ,
     );
 
-    const lookAt =
-      new THREE.Vector3(
-        target.x,
-        target.y + 1.25,
-        target.z
-      );
+    camera.position.lerp(desiredPosition, 1 - Math.pow(0.001, delta));
+
+    const lookAt = new THREE.Vector3(target.x, target.y + 1.25, target.z);
 
     camera.lookAt(lookAt);
   });
@@ -1087,11 +915,9 @@ function PlayerHUD() {
   useFrame(() => {
     if (!hud.current) return;
 
-    const speed =
-      player.current.speed;
+    const speed = player.current.speed;
 
-    const moving =
-      speed > 0.2;
+    const moving = speed > 0.2;
 
     hud.current.innerText = moving
       ? speed > 5
@@ -1116,9 +942,7 @@ function AboutModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.4, 1.45, 0.18]}
-        />
+        <boxGeometry args={[2.4, 1.45, 0.18]} />
 
         <meshStandardMaterial
           color="#11161f"
@@ -1128,9 +952,7 @@ function AboutModule() {
       </mesh>
 
       <mesh position={[0, 0, 0.11]}>
-        <boxGeometry
-          args={[2.18, 1.18, 0.025]}
-        />
+        <boxGeometry args={[2.18, 1.18, 0.025]} />
 
         <meshStandardMaterial
           color="#171d27"
@@ -1152,8 +974,7 @@ function AboutModule() {
         textAlign="center"
         color="#9ca7b8"
       >
-        Unity gameplay, C#, backend systems and
-        interactive game technology.
+        Unity gameplay, C#, backend systems and interactive game technology.
       </Text>
     </group>
   );
@@ -1167,9 +988,7 @@ function GameForgeModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.4, 1.45, 0.18]}
-        />
+        <boxGeometry args={[2.4, 1.45, 0.18]} />
 
         <meshStandardMaterial
           color="#101821"
@@ -1179,9 +998,7 @@ function GameForgeModule() {
       </mesh>
 
       <mesh position={[0, 0, 0.12]}>
-        <boxGeometry
-          args={[1.65, 0.75, 0.08]}
-        />
+        <boxGeometry args={[1.65, 0.75, 0.08]} />
 
         <meshStandardMaterial
           color="#1d2733"
@@ -1190,13 +1007,8 @@ function GameForgeModule() {
         />
       </mesh>
 
-      <mesh
-        position={[0, 0, 0.19]}
-        rotation={[0, 0, 0]}
-      >
-        <torusGeometry
-          args={[0.28, 0.045, 12, 32]}
-        />
+      <mesh position={[0, 0, 0.19]} rotation={[0, 0, 0]}>
+        <torusGeometry args={[0.28, 0.045, 12, 32]} />
 
         <meshStandardMaterial
           color="#d9dee6"
@@ -1224,9 +1036,7 @@ function DeadEndModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.35, 1.4, 0.18]}
-        />
+        <boxGeometry args={[2.35, 1.4, 0.18]} />
 
         <meshStandardMaterial
           color="#15161b"
@@ -1235,12 +1045,8 @@ function DeadEndModule() {
         />
       </mesh>
 
-      <mesh
-        position={[0, 0.05, 0.14]}
-      >
-        <coneGeometry
-          args={[0.35, 0.7, 6]}
-        />
+      <mesh position={[0, 0.05, 0.14]}>
+        <coneGeometry args={[0.35, 0.7, 6]} />
 
         <meshStandardMaterial
           color="#35343a"
@@ -1266,9 +1072,7 @@ function FlappyModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.35, 1.4, 0.18]}
-        />
+        <boxGeometry args={[2.35, 1.4, 0.18]} />
 
         <meshStandardMaterial
           color="#151a1d"
@@ -1278,9 +1082,7 @@ function FlappyModule() {
       </mesh>
 
       <mesh position={[0, 0.05, 0.16]}>
-        <sphereGeometry
-          args={[0.28, 20, 20]}
-        />
+        <sphereGeometry args={[0.28, 20, 20]} />
 
         <meshStandardMaterial
           color="#c7ccd2"
@@ -1306,9 +1108,7 @@ function SkillsModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.4, 1.45, 0.18]}
-        />
+        <boxGeometry args={[2.4, 1.45, 0.18]} />
 
         <meshStandardMaterial
           color="#131820"
@@ -1344,9 +1144,7 @@ function ExperienceModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.4, 1.45, 0.18]}
-        />
+        <boxGeometry args={[2.4, 1.45, 0.18]} />
 
         <meshStandardMaterial
           color="#15191f"
@@ -1382,9 +1180,7 @@ function ResumeModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.3, 1.35, 0.18]}
-        />
+        <boxGeometry args={[2.3, 1.35, 0.18]} />
 
         <meshStandardMaterial
           color="#181b20"
@@ -1394,9 +1190,7 @@ function ResumeModule() {
       </mesh>
 
       <mesh position={[0, 0.03, 0.14]}>
-        <boxGeometry
-          args={[0.7, 0.8, 0.06]}
-        />
+        <boxGeometry args={[0.7, 0.8, 0.06]} />
 
         <meshStandardMaterial
           color="#d3d7dd"
@@ -1422,9 +1216,7 @@ function ContactModule() {
   return (
     <group>
       <mesh>
-        <boxGeometry
-          args={[2.35, 1.35, 0.18]}
-        />
+        <boxGeometry args={[2.35, 1.35, 0.18]} />
 
         <meshStandardMaterial
           color="#151920"
@@ -1434,15 +1226,9 @@ function ContactModule() {
       </mesh>
 
       <mesh position={[0, 0.05, 0.14]}>
-        <boxGeometry
-          args={[0.85, 0.5, 0.08]}
-        />
+        <boxGeometry args={[0.85, 0.5, 0.08]} />
 
-        <meshStandardMaterial
-          color="#202833"
-          metalness={0.8}
-          roughness={0.2}
-        />
+        <meshStandardMaterial color="#202833" metalness={0.8} roughness={0.2} />
       </mesh>
 
       <Label
@@ -1463,27 +1249,18 @@ function Stars() {
     const result: number[] = [];
 
     for (let i = 0; i < 900; i++) {
-      const radius =
-        18 + Math.random() * 30;
+      const radius = 18 + Math.random() * 30;
 
-      const theta =
-        Math.random() * Math.PI * 2;
+      const theta = Math.random() * Math.PI * 2;
 
-      const phi =
-        Math.acos(
-          THREE.MathUtils.randFloatSpread(2)
-        );
+      const phi = Math.acos(THREE.MathUtils.randFloatSpread(2));
 
       result.push(
-        Math.sin(phi) *
-          Math.cos(theta) *
-          radius,
+        Math.sin(phi) * Math.cos(theta) * radius,
 
         Math.cos(phi) * radius,
 
-        Math.sin(phi) *
-          Math.sin(theta) *
-          radius
+        Math.sin(phi) * Math.sin(theta) * radius,
       );
     }
 
@@ -1493,10 +1270,7 @@ function Stars() {
   return (
     <points>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
 
       <pointsMaterial
@@ -1517,10 +1291,7 @@ function Stars() {
 function Ground() {
   return (
     <group>
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -0.04, 0]}
-      >
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.04, 0]}>
         <planeGeometry args={[60, 60]} />
 
         <meshStandardMaterial
@@ -1530,15 +1301,7 @@ function Ground() {
         />
       </mesh>
 
-      <gridHelper
-        args={[
-          60,
-          60,
-          "#20252e",
-          "#10141b",
-        ]}
-        position={[0, 0, 0]}
-      />
+      <gridHelper args={[60, 60, "#20252e", "#10141b"]} position={[0, 0, 0]} />
     </group>
   );
 }
@@ -1547,16 +1310,9 @@ function Ground() {
    MAIN SCENE
 ========================================================= */
 
-export default function Scene({
-  onOpen,
-  reducedMotion = false,
-}: SceneProps) {
+export default function Scene({ onOpen, reducedMotion = false }: SceneProps) {
   const player = useRef<PlayerState>({
-    position: new THREE.Vector3(
-      0,
-      0,
-      0
-    ),
+    position: new THREE.Vector3(0, 0, 0),
 
     rotation: 0,
 
@@ -1582,27 +1338,13 @@ export default function Scene({
             LIGHTING
         ============================================== */}
 
-        <color
-          attach="background"
-          args={["#05070b"]}
-        />
+        <color attach="background" args={["#05070b"]} />
 
-        <fog
-          attach="fog"
-          args={[
-            "#05070b",
-            12,
-            42,
-          ]}
-        />
+        <fog attach="fog" args={["#05070b", 12, 42]} />
 
         <ambientLight intensity={0.8} />
 
-        <directionalLight
-          position={[5, 10, 5]}
-          intensity={2}
-          castShadow
-        />
+        <directionalLight position={[5, 10, 5]} intensity={2} castShadow />
 
         <pointLight
           position={[0, 4, 0]}
@@ -1663,7 +1405,7 @@ export default function Scene({
 
         <Interactive
           position={[-5.2, -1.5, -2.8]}
-          onClick={() => onOpen("dead-end")}
+          onClick={() => onOpen("deadend")}
         >
           <DeadEndModule />
         </Interactive>
@@ -1689,10 +1431,7 @@ export default function Scene({
           <ExperienceModule />
         </Interactive>
 
-        <Interactive
-          position={[0, -4.1, 2.8]}
-          onClick={() => onOpen("resume")}
-        >
+        <Interactive position={[0, -4.1, 2.8]} onClick={() => onOpen("resume")}>
           <ResumeModule />
         </Interactive>
 
